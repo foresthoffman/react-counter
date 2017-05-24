@@ -12,3 +12,11 @@
 	max-width: 900px;
 	margin: 0 auto;
 }
+
+.config-group {
+	margin: 5px 0;
+}
+
+.config-group input {
+	margin: 0 10px;
+}

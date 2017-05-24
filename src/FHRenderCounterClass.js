@@ -36,6 +36,8 @@
  *
  */
 
+import jQuery from 'jquery';
+
 function FHRenderCounterClass () {}
 
 FHRenderCounterClass.prototype.init = function ( elem_id ) {	
