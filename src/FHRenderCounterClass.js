@@ -36,12 +36,23 @@
  *
  */
 
+/* eslint-disable */
+
 import jQuery from 'jquery';
 
-function FHRenderCounterClass () {}
+var FHRenderCounterClass = function ( elem_id ) {
+	if ( 'undefined' === typeof elem_id ) {
+		throw new TypeError( 'elem_id is undefined.' );
+	} else if ( ! elem_id ) {
+		throw new TypeError( 'elem_id is invalid type of ' + typeof elem_id + '.' );
+	}
 
-FHRenderCounterClass.prototype.init = function ( elem_id ) {	
-	this._CANVAS = document.getElementById( elem_id );
+	if ( 'string' === typeof elem_id ) {
+		this._CANVAS = document.getElementsByClassName( elem_id )[0];
+	} else if ( 'object' === typeof elem_id ) {
+		this._CANVAS = elem_id;
+	}
+
 	if ( this._CANVAS.getContext ) {
 		this.CTX = this._CANVAS.getContext( '2d' );
 		
@@ -128,6 +139,10 @@ FHRenderCounterClass.prototype._get_year_radians = function ( date ) {
 };
 
 FHRenderCounterClass.prototype.set_arc_properties = function ( custom_properties ) {
+	if ( 'undefined' === typeof this.ARC ) {
+		throw new TypeError( 'this.ARC is undefined.' );
+	}
+
 	var current_date = new Date();
 	var property_defaults = {
 		'stroke_width': 	10,
@@ -145,7 +160,7 @@ FHRenderCounterClass.prototype.set_arc_properties = function ( custom_properties
 		'anim_speed': 		30
 	};
 	var property_defaults_keys = Object.keys( property_defaults );
-	
+
 	if ( 0 === Object.keys( this.ARC ).length ) {		
 		for ( var i = 0; i < property_defaults_keys.length; i++ ) {
 			var property_name = property_defaults_keys[ i ];
@@ -212,9 +227,9 @@ FHRenderCounterClass.prototype.draw_arc = function () {
 			this.set_arc_properties();
 		}
 		
-		var canvas_content = jQuery( this._CANVAS ).siblings( '#canvas_content' )[0];
-		jQuery( canvas_content ).children( '#year' ).text( this.ARC.year_text );
-		jQuery( canvas_content ).children( '#year_suffix' ).text( this.ARC.year_suffix );
+		var canvas_content = jQuery( this._CANVAS ).siblings( '.counter-content' )[0];
+		jQuery( canvas_content ).children( '.counter-year-text' ).text( this.ARC.year_text );
+		jQuery( canvas_content ).children( '.counter-year-suffix' ).text( this.ARC.year_suffix );
 
 		jQuery( canvas_content ).css({
 			'left': ( this._CANVAS.width / 2 ) - ( canvas_content.clientWidth / 2 ),
@@ -254,3 +269,5 @@ FHRenderCounterClass.prototype.draw_arc = function () {
 		window.requestAnimationFrame( this.draw_arc.bind( this ) );
 	}
 };
+
+export default FHRenderCounterClass;

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Form from './Form.js';
+import Counter from './Counter.js';
 import './index.css';
 
 class App extends React.Component {
@@ -9,25 +10,27 @@ class App extends React.Component {
 
 		// the size of the canvas that the counter will be drawn on (in pixels)
 		const canvasSize = {
-			width: 600,
-			height: 600
+			width: 200,
+			height: 200
 		};
 		this.state = {
 			dateInputSupported: false,
 			counter: {
-				stroke_width:   10,
-				stroke_color:   '#fde244',
-				start_year:     '01/01/1970',
+				canvasWidth:   canvasSize.width,
+				canvasHeight:  canvasSize.height,
+				strokeWidth:   10,
+				strokeColor:   '#fde244',
+				startYear:     '01/01/1970',
 				year:           '01/01/1970',
-				year_text:      '2',
-				year_suffix:    'yrs',
-				x:              canvasSize.width / 2,
-				y:              canvasSize.height / 2,
-				radius:         canvasSize.width / 2 - 10,
-				initial_angle:  0,
-				final_angle:    2 * Math.PI,
-				anti_clockwise: true,
-				anim_speed:     30
+				yearText:      '2',
+				yearSuffix:    'yrs',
+				x:             Number.parseInt( canvasSize.width, 10 ) / 2,
+				y:             Number.parseInt( canvasSize.height, 10 ) / 2,
+				radius:        Number.parseInt( canvasSize.width, 10 ) / 2 - 10,
+				initialAngle:  0,
+				finalAngle:    2 * Math.PI,
+				antiClockwise: true,
+				animSpeed:     30
 			}
 		};
 	}
@@ -37,7 +40,9 @@ class App extends React.Component {
 		// there are date fields in the form, so we need to check that the date input type is
 		// supported by the browser
 		if ( checkDateInput() ) {
-			this.state.dateInputSupported = true;
+			this.setState({
+				dateInputSupported: true,
+			});
 		}
 	}
 
@@ -83,6 +88,23 @@ class App extends React.Component {
 				<Form
 					onSubmit={ ( e ) => this.onSubmit( e ) }
 					dateInputSupported={ this.state.dateInputSupported }
+				/>
+				<Counter
+					canvasWidth={   this.state.counter.canvasWidth }
+					canvasHeight={  this.state.counter.canvasHeight }
+					strokeWidth={   this.state.counter.strokeWidth }
+					strokeColor={   this.state.counter.strokeColor }
+					startYear={     this.state.counter.startYear }
+					year={          this.state.counter.year }
+					yearText={      this.state.counter.yearText }
+					yearSuffix={    this.state.counter.yearSuffix }
+					x={             this.state.counter.x }
+					y={             this.state.counter.y }
+					radius={        this.state.counter.radius }
+					initialAngle={  this.state.counter.initialAngle }
+					finalAngle={    this.state.counter.finalAngle }
+					antiClockwise={ this.state.counter.antiClockwise }
+					animSpeed={     this.state.counter.animSpeed }
 				/>
 			</div>
 		);
