@@ -10,10 +10,12 @@ class App extends React.Component {
 
 		// the size of the canvas that the counter will be drawn on (in pixels)
 		const canvasSize = {
-			width: 200,
-			height: 200
+			width: 300,
+			height: 300
 		};
 		this.state = {
+			frames: 0,
+			radPerFrame: 0,
 			dateInputSupported: false,
 			counter: {
 				canvasWidth:   canvasSize.width,
@@ -21,7 +23,7 @@ class App extends React.Component {
 				strokeWidth:   10,
 				strokeColor:   '#fde244',
 				startYear:     '01/01/1970',
-				year:           '01/01/1970',
+				year:          '01/01/1970',
 				yearText:      '2',
 				yearSuffix:    'yrs',
 				x:             Number.parseInt( canvasSize.width, 10 ) / 2,
@@ -30,7 +32,7 @@ class App extends React.Component {
 				initialAngle:  0,
 				finalAngle:    2 * Math.PI,
 				antiClockwise: true,
-				animSpeed:     30
+				animSpeed:     30,
 			}
 		};
 	}
@@ -39,27 +41,50 @@ class App extends React.Component {
 
 		// there are date fields in the form, so we need to check that the date input type is
 		// supported by the browser
+		let dateInputSupported = false;
 		if ( checkDateInput() ) {
-			this.setState({
-				dateInputSupported: true,
+			dateInputSupported = true;
+		}
+
+		let self = this;
+
+		this.setState({
+			dateInputSupported: dateInputSupported,
+			request: requestAnimationFrame( () => this.tick( self ) ),
+		});
+	}
+
+	componentWillUnmount() {
+		cancelAnimationFrame( this.state.request );
+	}
+
+	tick( self ) {
+		const radPerFrame = ( self.state.frames / self.state.counter.animSpeed ) * Math.PI;
+		const currentAngle = radPerFrame + self.state.counter.initialAngle;
+		if ( currentAngle < self.state.counter.finalAngle ) {
+			self.setState({
+				radPerFrame: radPerFrame,
+				frames: self.state.frames + 1,
+				request: requestAnimationFrame( () => this.tick( self ) ),
 			});
 		}
 	}
 
+	// updates counter properties based on the values in the form
 	onSubmit( event ) {
 		event.preventDefault();
 		const form = event.target;
 		const formLength = form.length;
 		let data = {};
 		for ( let i = 0; i < formLength; i++ ) {
-			let name = form[ i ].name.replace( 'config-', '' ).replace( '-', '_' );
+			let name = form[ i ].name.replace( 'config-', '' );
 			let type = form[ i ].type;
 			let value;
 
 			switch ( type ) {
 				case 'number':
 					value = ( '' !== form[ i ].value ) ?
-						Number.parseInt( form[ i ].value, 1 ) :
+						Number.parseInt( form[ i ].value, 10 ) :
 						null;
 					break;
 				case 'checkbox':
@@ -76,7 +101,9 @@ class App extends React.Component {
 			}
 		}
 
-		console.log( data );
+		this.setState({
+			counter: Object.assign( this.state.counter, data ),
+		});
 	}
 
 	render() {
@@ -90,21 +117,23 @@ class App extends React.Component {
 					dateInputSupported={ this.state.dateInputSupported }
 				/>
 				<Counter
-					canvasWidth={   this.state.counter.canvasWidth }
-					canvasHeight={  this.state.counter.canvasHeight }
-					strokeWidth={   this.state.counter.strokeWidth }
-					strokeColor={   this.state.counter.strokeColor }
-					startYear={     this.state.counter.startYear }
-					year={          this.state.counter.year }
-					yearText={      this.state.counter.yearText }
-					yearSuffix={    this.state.counter.yearSuffix }
-					x={             this.state.counter.x }
-					y={             this.state.counter.y }
-					radius={        this.state.counter.radius }
-					initialAngle={  this.state.counter.initialAngle }
-					finalAngle={    this.state.counter.finalAngle }
+					frames={ this.state.frames }
+					radPerFrame={ this.state.radPerFrame }
+					canvasWidth={ this.state.counter.canvasWidth }
+					canvasHeight={ this.state.counter.canvasHeight }
+					strokeWidth={ this.state.counter.strokeWidth }
+					strokeColor={ this.state.counter.strokeColor }
+					startYear={ this.state.counter.startYear }
+					year={ this.state.counter.year }
+					yearText={ this.state.counter.yearText }
+					yearSuffix={ this.state.counter.yearSuffix }
+					x={ this.state.counter.x }
+					y={ this.state.counter.y }
+					radius={ this.state.counter.radius }
+					initialAngle={ this.state.counter.initialAngle }
+					finalAngle={ this.state.counter.finalAngle }
 					antiClockwise={ this.state.counter.antiClockwise }
-					animSpeed={     this.state.counter.animSpeed }
+					animSpeed={ this.state.counter.animSpeed }
 				/>
 			</div>
 		);
