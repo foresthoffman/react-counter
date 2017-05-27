@@ -2,7 +2,6 @@ TODO:
  ☐ make the canvas render cleanly @created(17-05-26 20:19) @issue-1
  ☐ finish the Counter component @created(17-05-26 20:21) @issue-2
  ☐ fix anitClockwise option not displaying correct value @created(17-05-26 20:51) @issue-3
- ☐ make the angle inputs on the Form take degrees rather than radians @created(17-05-26 20:59) @issue-4
 DONE:
-
+ ✔ make the angle inputs on the Form take degrees rather than radians @created(17-05-26 20:59) @issue-4 @done (17-05-26 21:14)
 CANCELLED:
