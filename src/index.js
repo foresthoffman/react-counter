@@ -21,7 +21,7 @@ class App extends React.Component {
 				canvasWidth:   canvasSize.width,
 				canvasHeight:  canvasSize.height,
 				strokeWidth:   10,
-				strokeColor:   '#fde244',
+				strokeColor:   'black', // #fde244
 				startYear:     '01/01/1970',
 				year:          '01/01/1970',
 				yearText:      '2',
@@ -30,7 +30,7 @@ class App extends React.Component {
 				y:             Number.parseInt( canvasSize.height, 10 ) / 2,
 				radius:        Number.parseInt( canvasSize.width, 10 ) / 2 - 10,
 				initialAngle:  0,
-				finalAngle:    2 * Math.PI,
+				finalAngle:    Math.PI, // 2 * Math.PI
 				antiClockwise: true,
 				animSpeed:     30,
 			}
@@ -47,7 +47,6 @@ class App extends React.Component {
 		}
 
 		let self = this;
-
 		this.setState({
 			dateInputSupported: dateInputSupported,
 			request: requestAnimationFrame( () => this.tick( self ) ),
@@ -61,10 +60,15 @@ class App extends React.Component {
 	tick( self ) {
 		const radPerFrame = ( self.state.frames / self.state.counter.animSpeed ) * Math.PI;
 		const currentAngle = radPerFrame + self.state.counter.initialAngle;
-		if ( currentAngle < self.state.counter.finalAngle ) {
+		console.log( '=== tick() -> Frame: ', this.state.frames,' ===' );
+		console.log( 'radPerFrame: ', radPerFrame );
+		console.log( 'currentAngle: ', currentAngle );
+
+		// continues to draw the counter(s), if the necessary frames haven't been drawn
+		if ( currentAngle <= self.state.counter.finalAngle ) {
 			self.setState({
-				radPerFrame: radPerFrame,
 				frames: self.state.frames + 1,
+				radPerFrame: radPerFrame,
 				request: requestAnimationFrame( () => this.tick( self ) ),
 			});
 		}
@@ -84,7 +88,9 @@ class App extends React.Component {
 			switch ( type ) {
 				case 'number':
 					value = ( '' !== form[ i ].value ) ?
-						Number.parseInt( form[ i ].value, 10 ) :
+
+						// convert the angles in degrees to radians, for the counter's internal use
+						Number.parseFloat( form[ i ].value, 10 ) * ( Math.PI / 180 ) :
 						null;
 					break;
 				case 'checkbox':
@@ -102,7 +108,10 @@ class App extends React.Component {
 		}
 
 		this.setState({
+			frames: 0,
+			radPerFrame: 0,
 			counter: Object.assign( this.state.counter, data ),
+			request: requestAnimationFrame( () => this.tick( this ) ),
 		});
 	}
 

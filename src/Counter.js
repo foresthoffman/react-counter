@@ -62,12 +62,8 @@ class Counter extends React.Component {
 		// clears the canvas in preparation for drawing this frame
 		context.clearRect( 0, 0, canvas.width, canvas.height );
 
-		console.log( 'this.props.frames: ', this.props.frames );
-
+		// sets up the next angle and direction to draw toward
 		const currentAngle = this.props.radPerFrame + this.props.initialAngle;
-
-		console.log( 'currentAngle: ', currentAngle );
-
 		const rot = ( this.props.antiClockwise ? -1 : 1 );
 
 		// draws counter styles
