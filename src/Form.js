@@ -2,6 +2,7 @@ import React from 'react';
 
 class Form extends React.Component {
 	render() {
+		const checkedAttr = this.props.antiClockwise ? ' checked' : '';
 		return (
 			<form className='config-form' onSubmit={ ( e ) => this.props.onSubmit( e ) }>
 				<div className='config-group'>
@@ -102,7 +103,10 @@ class Form extends React.Component {
 						className='config-initialAngle'
 						type='number'
 						value={ this.props.initialAngle }
-					/><span>radians</span>
+						step="0.001"
+						min="0"
+						max="360"
+					/><span>degrees</span>
 				</div>
 				<div className='config-group'>
 					{ /* Final Angle */ }
@@ -112,7 +116,10 @@ class Form extends React.Component {
 						className='config-finalAngle'
 						type='number'
 						value={ this.props.finalAngle }
-					/><span>radians</span>
+						step="0.001"
+						min="0"
+						max="360"
+					/><span>degrees</span>
 				</div>
 				<div className='config-group'>
 					{ /* Anti-clockwise */ }
