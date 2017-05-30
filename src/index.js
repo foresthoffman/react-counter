@@ -15,7 +15,7 @@ class App extends React.Component {
 		};
 		this.state = {
 			frames: 0,
-			radPerFrame: 0,
+			currentAngle: 0,
 			dateInputSupported: false,
 			counter: {
 				canvasWidth:   canvasSize.width,
@@ -29,8 +29,8 @@ class App extends React.Component {
 				x:             Number.parseInt( canvasSize.width, 10 ) / 2,
 				y:             Number.parseInt( canvasSize.height, 10 ) / 2,
 				radius:        Number.parseInt( canvasSize.width, 10 ) / 2 - 10,
-				initialAngle:  0,
-				finalAngle:    Math.PI, // 2 * Math.PI
+				initialAngle:  Math.PI / 2.0, // 0
+				finalAngle:    Math.PI * 3.0 / 2.0, // 2 * Math.PI
 				antiClockwise: true,
 				animSpeed:     30,
 			}
@@ -46,32 +46,56 @@ class App extends React.Component {
 			dateInputSupported = true;
 		}
 
-		let self = this;
 		this.setState({
 			dateInputSupported: dateInputSupported,
-			request: requestAnimationFrame( () => this.tick( self ) ),
+
+			// queues up the animation frame request loop
+			timeOut: this.tick( this ),
 		});
 	}
 
 	componentWillUnmount() {
-		cancelAnimationFrame( this.state.request );
+		clearTimeout( this.state.timeOut );
 	}
 
+	/**
+	 * Handles animation frame requests for drawing the Counter component. This is accomplished by
+	 * setting up a timer, based on the provided fps, to consistently request frames from the
+	 * browser.
+	 *
+	 * @param React.Component self A reference to the App component.
+	 * @return int The timeoutID returned by setTimeout().
+	 */
 	tick( self ) {
-		const radPerFrame = ( self.state.frames / self.state.counter.animSpeed ) * Math.PI;
-		const currentAngle = radPerFrame + self.state.counter.initialAngle;
-		console.log( '=== tick() -> Frame: ', this.state.frames,' ===' );
-		console.log( 'radPerFrame: ', radPerFrame );
-		console.log( 'currentAngle: ', currentAngle );
+		return setTimeout(
+			() => {
 
-		// continues to draw the counter(s), if the necessary frames haven't been drawn
-		if ( currentAngle <= self.state.counter.finalAngle ) {
-			self.setState({
-				frames: self.state.frames + 1,
-				radPerFrame: radPerFrame,
-				request: requestAnimationFrame( () => this.tick( self ) ),
-			});
-		}
+				// determines the radians that should be drawn in the current frame, based on the
+				// current progress of the animation (the number of frames) and the speed of the
+				// animation. The quotient of the frame count and the fps must be multiplied by
+				// pi in order to receive a quantity in radian seconds.
+				const radians = ( self.state.frames / self.state.counter.animSpeed ) * Math.PI;
+
+				// determines the angle that the counter should be at in this frame
+				const currentAngle = radians + self.state.counter.initialAngle;
+
+				// continues to draw the counter(s), if the necessary frames haven't been drawn
+				if ( currentAngle <= self.state.counter.finalAngle ) {
+
+					// requests an animation frame from the browser, so that it will handle the
+					// next tick, when it can.
+					requestAnimationFrame( () => this.tick( self ) );
+
+					// increments the frame count and updates the state to propagate the new data
+					// to the counter
+					self.setState({
+						frames: self.state.frames + 1,
+						currentAngle: currentAngle,
+					});
+				}
+			},
+			1000 / this.state.counter.animSpeed
+		);
 	}
 
 	// updates counter properties based on the values in the form
@@ -87,6 +111,13 @@ class App extends React.Component {
 
 			switch ( type ) {
 				case 'number':
+					if ( 'initialAngle' !== name && 'finalAngle' !== name ) {
+						value = ( '' !== form[ i ].value ) ?
+							Number.parseFloat( form[ i ].value, 10 ) :
+							null;
+						break;
+					}
+
 					value = ( '' !== form[ i ].value ) ?
 
 						// convert the angles in degrees to radians, for the counter's internal use
@@ -107,11 +138,17 @@ class App extends React.Component {
 			}
 		}
 
+		// clears the current timeout object, which may or may not be still in use. When drawing in
+		// the request loop has ended, the recursive nature of the loop renders the timeout object
+		// unusable.
+		clearTimeout( this.state.counter.timeOut );
+
+		// resets state data for the drawing of the Counter component
 		this.setState({
 			frames: 0,
-			radPerFrame: 0,
+			currentAngle: 0,
 			counter: Object.assign( this.state.counter, data ),
-			request: requestAnimationFrame( () => this.tick( this ) ),
+			timeout: this.tick( this ),
 		});
 	}
 
@@ -126,8 +163,7 @@ class App extends React.Component {
 					dateInputSupported={ this.state.dateInputSupported }
 				/>
 				<Counter
-					frames={ this.state.frames }
-					radPerFrame={ this.state.radPerFrame }
+					currentAngle={ this.state.currentAngle }
 					canvasWidth={ this.state.counter.canvasWidth }
 					canvasHeight={ this.state.counter.canvasHeight }
 					strokeWidth={ this.state.counter.strokeWidth }
@@ -140,9 +176,7 @@ class App extends React.Component {
 					y={ this.state.counter.y }
 					radius={ this.state.counter.radius }
 					initialAngle={ this.state.counter.initialAngle }
-					finalAngle={ this.state.counter.finalAngle }
 					antiClockwise={ this.state.counter.antiClockwise }
-					animSpeed={ this.state.counter.animSpeed }
 				/>
 			</div>
 		);
