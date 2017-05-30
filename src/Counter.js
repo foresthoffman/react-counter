@@ -3,56 +3,6 @@ import ReactDOM from 'react-dom';
 
 class Counter extends React.Component {
 
-	// // setups defaults for the canvas properties
-	// constructor( props ) {
-	// 	super( props );
-
-	// 	const width = this.props.canvasWidth ? Number.parseInt( this.props.canvasWidth, 10 ) : 200;
-	// 	const height = this.props.canvasHeight ? Number.parseInt( this.props.canvasHeight, 10 ) : 200;
-	// 	this.state = {
-	// 		request: 0,
-	// 		canvas: null,
-	// 		context: null,
-	// 		frames: 0,
-	// 		animating: true,
-	// 		props: {
-	// 			canvasWidth:   width,
-	// 			canvasHeight:  height,
-	// 			strokeWidth:   this.props.strokeWidth ?
-	// 				           Number.parseInt( this.props.strokeWidth, 10 ) :
-	// 				           10,
-	// 			strokeColor:   this.props.strokeColor ? this.props.strokeColor : '#fde244',
-	// 			startYear:     this.props.startYear ?
-	// 				           new Date( this.props.startYear ) :
-	// 				           new Date( 1970, 1, 1 ),
-	// 			year:          this.props.year ?
-	// 				           new Date( this.props.year ) :
-	// 				           new Date( 1970, 1, 1 ),
-	// 			yearText:      this.props.yearText ? this.props.yearText : '2',
-	// 			yearSuffix:    this.props.yearSuffix ? this.props.yearSuffix : 'yrs',
-	// 			x:             this.props.x ? Number.parseInt( this.props.x, 10 ) : width / 2,
-	// 			y:             this.props.y ? Number.parseInt( this.props.y, 10 ) : height / 2,
-	// 			radius:        this.props.radius ?
-	// 				           Number.parseInt( this.props.radius, 10 ) :
-	// 				           width / 2 - 10,
-	// 			initialAngle:  this.props.initialAngle ?
-	// 				           Number.parseInt( this.props.initialAngle, 10 ) :
-	// 				           0,
-	// 			finalAngle:    this.props.finalAngle ?
-	// 				           Number.parseInt( this.props.finalAngle, 10 ) :
-	// 				           2 * Math.PI,
-	// 			antiClockwise: this.props.antiClockwise ? this.props.antiClockwise : true,
-	// 			animSpeed:     this.props.animSpeed ?
-	// 				           Number.parseInt( this.props.animSpeed, 10 ) :
-	// 				           30,
-	// 			shadowColor:   'black',
-	// 			shadowBlur:    2,
-	// 			shadowOffsetX: 1,
-	// 			shadowOffsetY: 1,
-	// 		},
-	// 	};
-	// }
-
 	// draws the counter when it has been updated in the React DOM
 	componentDidUpdate() {
 		const wrapper = ReactDOM.findDOMNode( this );
@@ -62,8 +12,6 @@ class Counter extends React.Component {
 		// clears the canvas in preparation for drawing this frame
 		context.clearRect( 0, 0, canvas.width, canvas.height );
 
-		// sets up the next angle and direction to draw toward
-		const currentAngle = this.props.radPerFrame + this.props.initialAngle;
 		const rot = ( this.props.antiClockwise ? -1 : 1 );
 
 		// draws counter styles
@@ -77,7 +25,7 @@ class Counter extends React.Component {
 			this.props.y,
 			this.props.radius,
 			rot * this.props.initialAngle,
-			rot * currentAngle,
+			rot * this.props.currentAngle,
 			this.props.antiClockwise
 		);
 		context.stroke();
