@@ -110,6 +110,8 @@ class App extends React.Component {
 			let value;
 
 			switch ( type ) {
+				case 'submit':
+					continue;
 				case 'number':
 					if ( 'initialAngle' !== name && 'finalAngle' !== name ) {
 						value = ( '' !== form[ i ].value ) ?
@@ -133,22 +135,24 @@ class App extends React.Component {
 					value = form[ i ].value;
 			}
 
-			if ( null !== value ) {
-				data[ name ] = value;
-			}
+			data[ name ] = value && '' !== value ? value : this.state.counter[ name ];
 		}
+
+		// adds necessary data to the new Counter-data array, which prevents the Counter from breaking
+		data.canvasWidth = this.state.counter.canvasHeight;
+		data.canvasHeight = this.state.counter.canvasWidth;
 
 		// clears the current timeout object, which may or may not be still in use. When drawing in
 		// the request loop has ended, the recursive nature of the loop renders the timeout object
 		// unusable.
-		clearTimeout( this.state.counter.timeOut );
+		clearTimeout( this.state.timeOut );
 
 		// resets state data for the drawing of the Counter component
 		this.setState({
 			frames: 0,
 			currentAngle: 0,
-			counter: Object.assign( this.state.counter, data ),
-			timeout: this.tick( this ),
+			counter: data,
+			timeOut: this.tick( this ),
 		});
 	}
 
