@@ -135,7 +135,7 @@ class App extends React.Component {
 					value = form[ i ].value;
 			}
 
-			data[ name ] = value && '' !== value ? value : this.state.counter[ name ];
+			data[ name ] = ( null !== value && '' !== value ) ? value : this.state.counter[ name ];
 		}
 
 		// adds necessary data to the new Counter-data array, which prevents the Counter from breaking
