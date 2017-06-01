@@ -1,8 +1,21 @@
 import React from 'react';
 
 class Form extends React.Component {
+
+	/**
+	 * Toggles the value of a checkbox input between the values of "on" and an empty string ("").
+	 * This is because inputs in JSX are read only by default without providing a handler for change
+	 * events. The value property is set to "on" when the checked property is true and an empty
+	 * string when the checked property is false.
+	 *
+	 * @param Event e The event.
+	 */
+	toggleCheckbox( e ) {
+		let checkbox = e.target;
+		checkbox.value = checkbox.checked ? 'on' : '';
+	}
+
 	render() {
-		const checkedAttr = this.props.antiClockwise ? ' checked' : '';
 		return (
 			<form className='config-form' onSubmit={ ( e ) => this.props.onSubmit( e ) }>
 				<div className='config-group'>
@@ -12,7 +25,7 @@ class Form extends React.Component {
 						name='config-strokeWidth'
 						className='config-strokeWidth'
 						type='number'
-						value={ this.props.strokeWidth }
+						defaultValue={ this.props.strokeWidth }
 					/><span>px</span>
 				</div>
 				<div className='config-group'>
@@ -22,7 +35,7 @@ class Form extends React.Component {
 						name='config-strokeColor'
 						className='config-strokeColor'
 						type='text'
-						value={ this.props.strokeColor }
+						defaultValue={ this.props.strokeColor }
 					/>
 				</div>
 				<div className='config-group'>
@@ -52,7 +65,7 @@ class Form extends React.Component {
 						name='config-yearText'
 						className='config-yearText'
 						type='text'
-						value={ this.props.yearText }
+						defaultValue={ this.props.yearText }
 					/>
 				</div>
 				<div className='config-group'>
@@ -62,7 +75,7 @@ class Form extends React.Component {
 						name='config-yearSuffix'
 						className='config-yearSuffix'
 						type='text'
-						value={ this.props.yearSuffix }
+						defaultValue={ this.props.yearSuffix }
 					/>
 				</div>
 				<div className='config-group'>
@@ -72,7 +85,7 @@ class Form extends React.Component {
 						name='config-x'
 						className='config-x'
 						type='number'
-						value={ this.props.x }
+						defaultValue={ this.props.x }
 					/><span>px</span>
 				</div>
 				<div className='config-group'>
@@ -82,7 +95,7 @@ class Form extends React.Component {
 						name='config-y'
 						className='config-y'
 						type='number'
-						value={ this.props.y }
+						defaultValue={ this.props.y }
 					/><span>px</span>
 				</div>
 				<div className='config-group'>
@@ -92,7 +105,7 @@ class Form extends React.Component {
 						name='config-radius'
 						className='config-radius'
 						type='number'
-						value={ this.props.radius }
+						defaultValue={ this.props.radius }
 					/><span>px</span>
 				</div>
 				<div className='config-group'>
@@ -102,7 +115,7 @@ class Form extends React.Component {
 						name='config-initialAngle'
 						className='config-initialAngle'
 						type='number'
-						value={ this.props.initialAngle }
+						defaultValue={ this.props.initialAngle }
 						step="0.001"
 						min="0"
 						max="360"
@@ -115,7 +128,7 @@ class Form extends React.Component {
 						name='config-finalAngle'
 						className='config-finalAngle'
 						type='number'
-						value={ this.props.finalAngle }
+						defaultValue={ this.props.finalAngle }
 						step="0.001"
 						min="0"
 						max="360"
@@ -128,7 +141,8 @@ class Form extends React.Component {
 						name='config-antiClockwise'
 						className='config-antiClockwise'
 						type='checkbox'
-						value={ this.props.antiClockwise }
+						defaultChecked
+						onChange={ this.toggleCheckbox }
 					/>
 				</div>
 				<div className='config-group'>
@@ -138,7 +152,7 @@ class Form extends React.Component {
 						name='config-animSpeed'
 						className='config-animSpeed'
 						type='number'
-						value={ this.props.animSpeed }
+						defaultValue={ this.props.animSpeed }
 					/><span>frames/second</span>
 				</div>
 				<input type='submit' value='Submit' />
@@ -153,7 +167,7 @@ class DatePicker extends React.Component {
 			<input name={ this.props.name }
 				className={ this.props.className }
 				type='date'
-				value={ this.props.value }
+				defaultValue={ this.props.value }
 			/>
 		);
 	}
