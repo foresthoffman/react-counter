@@ -1,5 +1,6 @@
 TODO:
  ☐ make the Counter year text default to the difference between the "year" property and the current year @created(17-05-30 21:21) @issue-5
+ ☐ update documentation @created(17-05-31 19:52) @issue-6
 DONE:
  ✔ make the angle inputs on the Form take degrees rather than radians @created(17-05-26 20:59) @issue-4 @done (17-05-26 21:14)
  ✔ make the canvas render cleanly @created(17-05-26 20:19) @issue-1 @done (17-05-30 16:17)
