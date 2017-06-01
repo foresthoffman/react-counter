@@ -165,6 +165,19 @@ class App extends React.Component {
 				<Form
 					onSubmit={ ( e ) => this.onSubmit( e ) }
 					dateInputSupported={ this.state.dateInputSupported }
+					strokeWidth={ this.state.counter.strokeWidth }
+					strokeColor={ this.state.counter.strokeColor }
+					startYear={ this.state.counter.startYear }
+					year={ this.state.counter.year }
+					yearText={ this.state.counter.yearText }
+					yearSuffix={ this.state.counter.yearSuffix }
+					x={ this.state.counter.x }
+					y={ this.state.counter.y }
+					radius={ this.state.counter.radius }
+					initialAngle={ this.state.counter.initialAngle * ( 180 / Math.PI ) }
+					finalAngle={ this.state.counter.finalAngle * ( 180 / Math.PI ) }
+					antiClockwise={ this.state.counter.antiClockwise }
+					animSpeed={ this.state.counter.animSpeed }
 				/>
 				<Counter
 					currentAngle={ this.state.currentAngle }
