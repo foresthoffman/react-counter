@@ -20,3 +20,7 @@
 .config-group input {
 	margin: 0 10px;
 }
+
+.counter-content {
+	font-size: 2.5rem;
+}
