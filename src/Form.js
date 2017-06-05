@@ -128,8 +128,8 @@ class Form extends React.Component {
 						name='config-finalAngle'
 						className='config-finalAngle'
 						type='number'
-						defaultValue={ this.props.finalAngle }
-						step="0.001"
+						defaultValue={ this.props.finalAngle.toPrecision( 5 ) }
+						step="0.0001"
 						min="0"
 						max="360"
 					/><span>degrees</span>
