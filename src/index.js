@@ -122,6 +122,7 @@ class App extends React.Component {
 		const form = event.target;
 		const formLength = form.length;
 		let data = {};
+		let renderMode = '';
 		for ( let i = 0; i < formLength; i++ ) {
 			let name = form[ i ].name.replace( 'config-', '' );
 			let type = form[ i ].type;
@@ -148,6 +149,13 @@ class App extends React.Component {
 					value = ( 'on' === form[ i ].value.toLowerCase() ) ?
 						true :
 						false;
+					break;
+				case 'radio':
+					if ( 'automatic' === form[ i ].value || 'manual' === form[ i ].value ) {
+						renderMode = form[ i ].value;
+					} else {
+						renderMode = 'automatic';
+					}
 					break;
 				default:
 					value = form[ i ].value;
