@@ -1,6 +1,4 @@
 TODO:
- ☐ make the Counter year text default to the difference between the "year" property and the current year @created(17-05-30 21:21) @issue-5
-   ☐ integrate the render mode form options with the App rendering functions @created(17-06-07 19:22)
  ☐ update documentation @created(17-05-31 19:52) @issue-6
 DONE:
  ✔ make the angle inputs on the Form take degrees rather than radians @created(17-05-26 20:59) @issue-4 @done (17-05-26 21:14)
@@ -8,4 +6,6 @@ DONE:
  ✔ finish the rendering functionality for the Counter component @created(17-05-26 20:21) @issue-2 @done (17-05-31 18:11)
  ✔ fix antiClockwise option not displaying correct value @created(17-05-26 20:51) @issue-3 @done (17-05-31 19:49)
    The antiClockwise option is a checkbox and is not properly representing the values in the App state.
+ ✔ make the Counter year text default to the difference between the "year" property and the current year @created(17-05-30 21:21) @issue-5 @done (17-06-07 20:55)
+   ✔ integrate the render mode form options with the App rendering functions @created(17-06-07 19:22) @done (17-06-07 20:55)
 CANCELLED:

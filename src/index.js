@@ -51,7 +51,7 @@ class App extends React.Component {
 				finalAngle:    finalAngle,
 				antiClockwise: true,
 				animSpeed:     30,
-			}
+			},
 		};
 	}
 
@@ -151,17 +151,32 @@ class App extends React.Component {
 						false;
 					break;
 				case 'radio':
-					if ( 'automatic' === form[ i ].value || 'manual' === form[ i ].value ) {
-						renderMode = form[ i ].value;
-					} else {
-						renderMode = 'automatic';
+					if ( ! renderMode && form[ i ].checked ) {
+						renderMode = ( 'automatic' === form[ i ].value ) ? 'automatic' : 'manual';
 					}
-					break;
+					continue;
 				default:
 					value = form[ i ].value;
 			}
 
-			data[ name ] = ( null !== value && '' !== value ) ? value : this.state.counter[ name ];
+			data[ name ] = ( null !== value ) ? value : this.state.counter[ name ];
+		}
+
+		if ( 'automatic' === renderMode ) {
+
+			// Sets the initial angle to 0 radians. Otherwise the drawn arc wouldn't accurately
+			// represent a proportion of time with respect to the difference between the maximum
+			// date (the "year" property) and the current date. That is, assuming that the initial
+			// angle value provided via the form is not equal to 0.
+			data.initialAngle = 0;
+
+			// determines the angle to which the Counter should draw (units are in radians)
+			data.finalAngle = this.getAngleFromYears( data.startYear, data.year );
+
+			// sets the year text to the difference between the start year date and the current
+			// date in years
+			data.yearText = Number.parseInt( getYearDiff( data.startYear ), 10 );
+			data.yearSuffix = 'yrs';
 		}
 
 		// adds necessary data to the new Counter-data array, which prevents the Counter from breaking
