@@ -1,8 +1,18 @@
+/**
+ * Form Component
+ *
+ * Copyright 2017 Forest Hoffman
+ * http://foresthoffman.com
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+/**
+ * The Form Component is used by the Arc Counter Customizer app to allow the user to customize the
+ * Counter on the fly.
+ */
 class Form extends React.Component {
-
 	componentDidMount() {
 
 		// triggers the onChange event for the render mode input
@@ -252,6 +262,11 @@ class Form extends React.Component {
 	}
 }
 
+/**
+ * DatePicker
+ *
+ * A date picker input for dealing with inconsistent browser support of the "date" input field type.
+ */
 class DatePicker extends React.Component {
 	render() {
 		return (
