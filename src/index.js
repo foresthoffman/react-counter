@@ -1,9 +1,21 @@
+/**
+ * Arc Counter Customizer
+ *
+ * This is an example project and my first deep dive into using the ReactJS library.
+ *
+ * Copyright 2017 Forest Hoffman
+ * http://foresthoffman.com
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Form from './Form.js';
 import Counter from './Counter.js';
 import './index.css';
 
+/**
+ * The App component handles the state of the application, form requests, and rendering the Counter.
+ */
 class App extends React.Component {
 	constructor() {
 		super();
@@ -73,13 +85,15 @@ class App extends React.Component {
 	}
 
 	componentWillUnmount() {
+
+		// destroys the timeout created in tick()
 		clearTimeout( this.state.timeOut );
 	}
 
 	/**
 	 * Handles animation frame requests for drawing the Counter component. This is accomplished by
-	 * setting up a timer, based on the provided fps, to consistently request frames from the
-	 * browser.
+	 * setting up a timer, based on the provided fps (animation speed), to consistently request
+	 * frames from the browser.
 	 *
 	 * @param React.Component self A reference to the App component.
 	 * @return int The timeoutID returned by setTimeout().
@@ -116,7 +130,15 @@ class App extends React.Component {
 		);
 	}
 
-	// updates counter properties based on the values in the form
+	/**
+	 * Handles form submissions and updates the App's state with the new Counter data. The data
+	 * that is passed onto the Counter is modified depending on the render mode. The render mode
+	 * is either set to "automatic" or "manual". The automatic render mode handles the initial and
+	 * final angles as well as the text contained within the Counter. The manual render mode allows
+	 * users to directly control the initial and final angles as well the text within the Counter.
+	 *
+	 * @param Event event The submission event.
+	 */
 	onSubmit( event ) {
 		event.preventDefault();
 		const form = event.target;
@@ -151,6 +173,8 @@ class App extends React.Component {
 						false;
 					break;
 				case 'radio':
+
+					// takes the render mode value from the first checked render mode input
 					if ( ! renderMode && form[ i ].checked ) {
 						renderMode = ( 'automatic' === form[ i ].value ) ? 'automatic' : 'manual';
 					}
