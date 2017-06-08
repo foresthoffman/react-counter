@@ -1,6 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 class Form extends React.Component {
+
+	componentDidMount() {
+
+		// triggers the onChange event for the render mode input
+		this.toggleRenderMode();
+	}
 
 	/**
 	 * Disables the year text, and initial/final angle fields when the render mode is set to
@@ -9,12 +16,19 @@ class Form extends React.Component {
 	 * the the render mode is set to "Manual". As the name implies, the manual mode allows for
 	 * direct control over the angles the Counter draws from/to and the year text contained within.
 	 *
-	 * @param Event e The event.
+	 * @param Event e Optional. The event.
 	 */
 	toggleRenderMode( e ) {
-		const radio = e.target;
-		const mode = radio.value;
+		let form, mode = null;
 		let i = 0;
+
+		if ( 'undefined' === typeof e ) {
+			form = ReactDOM.findDOMNode( this );
+			mode = form.querySelector( '.config-renderMode' ).value;
+		} else {
+			form = e.target.parentElement.parentElement;
+			mode = e.target.value;
+		}
 
 		// creates an array of input field classes indicating the fields that should be disabled
 		// for each of the render modes
@@ -29,7 +43,6 @@ class Form extends React.Component {
 				'.config-year',
 			],
 		};
-		const form = radio.parentElement.parentElement;
 
 		if ( 'automatic' === mode || 'manual' === mode ) {
 			const otherMode = 'automatic' === mode ? 'manual' : 'automatic';
