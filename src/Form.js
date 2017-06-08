@@ -1,6 +1,71 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 class Form extends React.Component {
+
+	componentDidMount() {
+
+		// triggers the onChange event for the render mode input
+		this.toggleRenderMode();
+	}
+
+	/**
+	 * Disables the year text, and initial/final angle fields when the render mode is set to
+	 * "Automatic". This allows the Counter to determine the angles it should use and the text it
+	 * should contain based on the dates provided. Alternatively, the date fields are disabled when
+	 * the the render mode is set to "Manual". As the name implies, the manual mode allows for
+	 * direct control over the angles the Counter draws from/to and the year text contained within.
+	 *
+	 * @param Event e Optional. The event.
+	 */
+	toggleRenderMode( e ) {
+		let form, mode = null;
+		let i = 0;
+
+		if ( 'undefined' === typeof e ) {
+			form = ReactDOM.findDOMNode( this );
+			mode = form.querySelector( '.config-renderMode' ).value;
+		} else {
+			form = e.target.parentElement.parentElement;
+			mode = e.target.value;
+		}
+
+		// creates an array of input field classes indicating the fields that should be disabled
+		// for each of the render modes
+		const fieldsToDisable = {
+			'automatic': [
+				'.config-yearText',
+				'.config-initialAngle',
+				'.config-finalAngle',
+			],
+			'manual': [
+				'.config-startYear',
+				'.config-year',
+			],
+		};
+
+		if ( 'automatic' === mode || 'manual' === mode ) {
+			const otherMode = 'automatic' === mode ? 'manual' : 'automatic';
+
+			// slaps the field classes together for one DOM query
+			const disableClassStr = fieldsToDisable[ mode ].join( ',' );
+			const enableClassStr = fieldsToDisable[ otherMode ].join( ',' );
+
+			// disables the irrelevant fields
+			let disableFields = form.querySelectorAll( disableClassStr );
+			let disableLen = disableFields.length;
+			for ( i = 0; i < disableLen; i++ ) {
+				disableFields[ i ].disabled = true;
+			}
+
+			// enables the relevant fields
+			let enableFields = form.querySelectorAll( enableClassStr );
+			let enableLen = enableFields.length;
+			for ( i = 0; i < enableLen; i++ ) {
+				enableFields[ i ].disabled = false;
+			}
+		}
+	}
 
 	/**
 	 * Toggles the value of a checkbox input between the values of "on" and an empty string ("").
@@ -18,6 +83,32 @@ class Form extends React.Component {
 	render() {
 		return (
 			<form className='config-form' onSubmit={ ( e ) => this.props.onSubmit( e ) }>
+				<div className='config-group'>
+					{ /* Render Mode */ }
+					<label htmlFor='config-renderMode'>Configure render mode:</label>
+					<input
+						name='config-renderMode'
+						className='config-renderMode'
+						type='radio'
+						value='automatic'
+						defaultChecked
+						onChange={ this.toggleRenderMode }
+					/>
+					<small>Automatic *</small>
+					<input
+						name='config-renderMode'
+						className='config-renderMode'
+						type='radio'
+						value='manual'
+						onChange={ this.toggleRenderMode }
+					/>
+					<small>Manual **</small>
+					<p>
+						<small>* In automatic mode, the Counter determines it's own angles and inner text based on the provided dates.</small>
+						<br/>
+						<small>** In manual mode, the Counter uses whatever angles and inner text it is provided from the form.</small>
+					</p>
+				</div>
 				<div className='config-group'>
 					{ /* Stroke Width */ }
 					<label htmlFor='config-strokeWidth'>Configure stroke width:</label>
@@ -128,8 +219,8 @@ class Form extends React.Component {
 						name='config-finalAngle'
 						className='config-finalAngle'
 						type='number'
-						defaultValue={ this.props.finalAngle }
-						step="0.001"
+						defaultValue={ this.props.finalAngle.toPrecision( 5 ) }
+						step="0.0001"
 						min="0"
 						max="360"
 					/><span>degrees</span>
