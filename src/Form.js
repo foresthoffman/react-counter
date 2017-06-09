@@ -269,13 +269,27 @@ class Form extends React.Component {
  */
 class DatePicker extends React.Component {
 	render() {
-		return (
-			<input name={ this.props.name }
-				className={ this.props.className }
-				type='date'
-				defaultValue={ this.props.value }
-			/>
-		);
+		if ( ! this.props.isSupported ) {
+
+			// renders a text field with a strict pattern for validation, in browsers without
+			// support for the "date" input field type
+			return (
+				<input name={ this.props.name }
+					className={ this.props.className }
+					type='date'
+					defaultValue={ this.props.value }
+					pattern='[0-9]{2}/[0-9]{2}/[0-9]{4}'
+				/>
+			);
+		} else {
+			return (
+				<input name={ this.props.name }
+					className={ this.props.className }
+					type='date'
+					defaultValue={ this.props.value }
+				/>
+			);
+		}
 	}
 }
 
