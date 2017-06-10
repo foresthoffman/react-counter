@@ -179,6 +179,22 @@ class App extends React.Component {
 						renderMode = ( 'automatic' === form[ i ].value ) ? 'automatic' : 'manual';
 					}
 					continue;
+				case 'date':
+
+					// this only applies to browsers that support the "date" input type
+					// e.g. Chrome
+					value = form[ i ].value;
+					const regex = /([0-9]{4})-([0-9]{2})-([0-9]{2})/g;
+					const matches = regex.exec( value );
+					if ( value && matches ) {
+						const month = matches[2];
+						const day = matches[3];
+						const year = matches[1];
+						value = month + '/' + day + '/' + year;
+					} else {
+						value = this.state.counter[ name ];
+					}
+					break;
 				default:
 					value = form[ i ].value;
 			}

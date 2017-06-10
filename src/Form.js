@@ -282,11 +282,23 @@ class DatePicker extends React.Component {
 				/>
 			);
 		} else {
+			let value = '';
+			const regex = /([0-9]{2})\/([0-9]{2})\/([0-9]{4})/g;
+			const matches = regex.exec( this.props.value );
+			if ( matches ) {
+				const month = matches[1];
+				const day = matches[2];
+				const year = matches[3];
+				value = year + '-' + month + '-' + day;
+			} else {
+				value = this.props.value;
+			}
+
 			return (
 				<input name={ this.props.name }
 					className={ this.props.className }
 					type='date'
-					defaultValue={ this.props.value }
+					defaultValue={ value }
 				/>
 			);
 		}
