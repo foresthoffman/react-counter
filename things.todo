@@ -1,5 +1,4 @@
 TODO:
- ☐ Fix Chrome date string errors @created(17-06-09 20:48) @issue-8
 DONE:
  ✔ make the angle inputs on the Form take degrees rather than radians @created(17-05-26 20:59) @issue-4 @done (17-05-26 21:14)
  ✔ make the canvas render cleanly @created(17-05-26 20:19) @issue-1 @done (17-05-30 16:17)
@@ -13,4 +12,5 @@ DONE:
   Adding a jQuery date-picker is unnecessary complicated for this project and it's needs.
  ✔ add basic date-picker for "date" input field @created(17-06-08 11:58) @issue-7 @done (17-06-08 23:03)
    Adding a jQuery date-picker is unnecessary complicated for this project and it's needs.
+ ✔ Fix Chrome date string errors @created(17-06-09 20:48) @issue-8 @done (17-06-09 21:27)
 CANCELLED:
