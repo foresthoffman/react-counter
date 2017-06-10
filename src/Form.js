@@ -113,11 +113,6 @@ class Form extends React.Component {
 						onChange={ this.toggleRenderMode }
 					/>
 					<small>Manual **</small>
-					<p>
-						<small>* In automatic mode, the Counter determines it's own angles and inner text based on the provided dates.</small>
-						<br/>
-						<small>** In manual mode, the Counter uses whatever angles and inner text it is provided from the form.</small>
-					</p>
 				</div>
 				<div className='config-group'>
 					{ /* Stroke Width */ }
@@ -147,7 +142,7 @@ class Form extends React.Component {
 						className='config-startYear'
 						value={ this.props.startYear }
 						isSupported={ this.props.dateInputSupported }
-					/>
+					/><span>(Most Recent) ***</span>
 				</div>
 				<div className='config-group'>
 					{ /* Year */ }
@@ -157,7 +152,7 @@ class Form extends React.Component {
 						className='config-year'
 						value={ this.props.year }
 						isSupported={ this.props.dateInputSupported }
-					/>
+					/><span>(Least Recent) ****</span>
 				</div>
 				<div className='config-group'>
 					{ /* Year Text */ }
@@ -256,6 +251,15 @@ class Form extends React.Component {
 						defaultValue={ this.props.animSpeed }
 					/><span>frames/second</span>
 				</div>
+				<p>
+					<small>* In automatic mode, the Counter determines it's own angles and inner text based on the provided dates.</small>
+					<br/>
+					<small>** In manual mode, the Counter uses whatever angles and inner text it is provided from the form.</small>
+					<br/>
+					<small>*** The most recent year, which dictates how full the Counter WILL be in automatic mode. e.g. 01/01/2000.</small>
+					<br/>
+					<small>**** The least recent year, which dictates how full the Counter COULD be in automatic mode. e.g. 01/01/1970.</small>
+				</p>
 				<input type='submit' value='Submit' />
 			</form>
 		);
