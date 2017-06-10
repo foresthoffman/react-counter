@@ -1,6 +1,6 @@
 {
   "name": "react-counter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "homepage": "http://foresthoffman.github.io/react-counter",
   "dependencies": {
